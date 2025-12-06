@@ -17,9 +17,29 @@ import icyayi3 from './icyayi3.jpeg'
 import umufukaaa from './umufukaaa.png'
 import tellme from './tellme.png'
 import menu from './menu.png'
+import prof3 from './prof3.jpeg'
+import rating from './rating.png'
+import nukuri1 from './nukuri1.png'
+import ukuri2 from './ukuri2.png'
+import facebook from './facebook.png'
+import instagram from './instagram.png'
+import twitter from './twitter.png'
+import user from './user.png'
+import home from './home.png'
+import carticon from './carticon.png'
+import coffebar from './coffebar.png'
+import abouticon from './abouticon.png'
+import userlogn from './userlogn.png'
+import cancel from './cancel.png'
 export const assets = {
+    cancel,
     download,
     cofi,
+    abouticon,
+    userlogn,
+    coffebar,
+    carticon,
+    home,
     profile,
     prof2,
     logocoffee,
@@ -36,5 +56,14 @@ export const assets = {
     icyayi3,
     umufukaaa,
     tellme,
-    menu
+    menu,
+    prof3,
+    rating,
+    ukuri2,
+    nukuri1,
+    twitter,
+    facebook,
+    instagram,
+    user
+
 }

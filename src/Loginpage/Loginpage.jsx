@@ -1,58 +1,175 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { assets } from '../assets/assets'
+import { data, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { StoreContext } from '../context/Storecontext'
+
+export const  API_URL=import.meta.env.VITE_API_URL
 
 const Loginpage = () => {
+const {getUserdata}=useContext(StoreContext)
+    const navigate = useNavigate()
+    const [currentstate, setcurrentstate] = useState("Login")
+    const [Firstname, setFirstname] = useState("")
+    const [Secondname, setSecondname] = useState("")
+    const [Email, setEmail] = useState("")
+    const [Password, setPassword] = useState("")
+
+const handleregister=async(e)=>{
+    e.preventDefault()
+try {
+    await axios.post(`${API_URL}/registered`,{
+Firstname,Secondname,Email,Password
+    })
+    setEmail('')
+    setFirstname('')
+    setSecondname('')
+    setPassword('')
+    toast.success('You are registered well ')
+} catch (error) {
+    console.log("failed to Register")
+    toast.error('failed to Register')
+}
+   }
+
+   const handlelogin=async(e)=>{
+    e.preventDefault()
+   try {
+    const loginresponce=await axios.post(`${API_URL}/login`,{
+        Email,Password
+    })
+    localStorage.setItem('token',loginresponce.data.token)
+    await getUserdata()
+    toast.success("You have successfull logged in")
+    window.location.href='/' 
+   } catch (error) {
+  console.log("logged in failed",error)
+toast.error("failed to login")
+   }
+}
+
+
+
     return (
-        <div className='flex h-screen'>
-            {/* image */}
-            <div className='w-1/2 relative'>
-                <img src={assets.login} alt="" className='w-full h-full object-cover' />
+        <div className='flex h-screen overflow-hidden'>
+            <div className='md:block hidden w-1/2 relative'>
+                <img src={assets.login} alt="" className='md:block hidden w-full 
+                 h-full object-cover' />
                 <div className='absolute top-5 left-5 cursor-pointer'>
-                    <img src={assets.turningback} className='w-10' alt="" />
+                    <img onClick={() => navigate('/')} src={assets.turningback}
+                        className='w-10 md:block ' alt="" />
                 </div>
             </div>
-            {/* login */}
 
-            <div className='bg-[#3E2723] w-1/2 flex flex-col justify-center items-center'>
-                <h2 className='text-white text-5xl'>Create an account</h2>
-                <p className="mb-6 text-white">Already have an account? <span className="text-purple-400 cursor-pointer">Log in</span></p>
-                <form className=''>
-                    <div className='flex  gap-10'>
-                        <input type="text" placeholder='First Name'
-                            className='py-3 px-3 rounded-lg bg-transparent bottom-2 text-purple bg-white outline-none ' />
-                        <input type="text" placeholder='Last Name' className='py-3 px-3 rounded-lg' />
-                    </div>
+            <div className='bg-[#3E2723] md:w-1/2 w-full relative  flex flex-col justify-center items-center'>
+                <img onClick={() => navigate('/')} src={assets.turningback}
+                    className='w-10 absolute  top-10 left-7 md:hidden block' alt="" />
+                <h2 className='text-white md:text-5xl mb-7 text-2xl'>{currentstate}</h2>
+                {currentstate === 'Login' ?
+                    <p className="mb-6 text-white">No Account? <span onClick={() => setcurrentstate("Create an Account")} className="text-purple-400 cursor-pointer">Sign up</span></p>
+                    :
+                    <p className="mb-6 text-white">Already have account? <span onClick={() => setcurrentstate("Login")} className="text-purple-400 cursor-pointer">Login</span></p>
+                }
 
-                    <div className='flex flex-col gap-3 mt-6 relative'>
-                        <div>
-                            <input type="email"
-                                className='w-full py-3 rounded-lg focus outline-none focus:right-2 px-3
-                     focus:ring-slate-500' placeholder='Email' />
-                            <div className='absolute  top-2 right-4'>
-                                <img src={assets.email} alt="" className='w-6 cursor-pointer' />
+                <form onSubmit={currentstate==='Login'? handlelogin:handleregister}>
+                    {currentstate === 'Login' ? (
+                        <>
+                            {/* Email */}
+                            <div className='relative mt-3'>
+                                <input
+                                    type="email"
+                                    placeholder='Email'
+                                    className='py-3 px-10 rounded-lg outline-none w-[300px]'
+                                    value={Email} onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <img
+                                    src={assets.email}
+                                    alt=""
+                                    className='absolute right-9 top-1/2 transform -translate-y-1/2 w-6'
+                                />
                             </div>
-                        </div>
 
-                        <div className='mt-3 relative'>
-                            <input type="password"
-                                className='w-full py-3 rounded-lg px-3 outline-none' placeholder='Password ' />
-                            <div className='absolute top-2 right-4'>
-                                <img src={assets.padlock} alt="" className='w-7 cursor-pointer' />
+                            {/* Password */}
+                            <div className='relative mt-3'>
+                                <input
+                                    type="password"
+                                    placeholder='Password'
+                                    className='py-3 px-10 rounded-lg outline-none w-[300px]'
+                                    value={Password} onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <img
+                                    src={assets.padlock}
+                                    alt=""
+                                    className='absolute right-9 top-1/2 transform -translate-y-1/2 w-6'
+                                />
                             </div>
-                        </div>
+                            <div className='bg-white mt-10 p-3 flex justify-center items-center
+                           hover:bg-amber-700 hover:text-white rounded-md cursor-pointer '>
+                                <button>Sign in</button>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            {/* First Name + Last Name stacked */}
+                            <div className=' mt-3 flex flex-col gap-4'>
+                                <div className=' relative   '>
+                                    <input
+                                        type="text"
+                                        placeholder='First Name'
+                                        className='py-3 px-3 rounded-lg outline-none w-[300px]'
+                                        value={Firstname} onChange={(e) =>setFirstname( e.target.value)}
+                                    />
+                                    <img src={assets.user} alt="" className='w-5 absolute top-1/4 right-9' />
+                                </div>
+                                <div className='relative'>
+                                    <input
+                                        type="text"
+                                        placeholder='Last Name'
+                                        className='py-3 px-3 rounded-lg outline-none w-[300px]'
+                                        value={Secondname} onChange={(e)=>setSecondname(e.target.value)}
+                                    />
+                                    <img src={assets.user} alt="" className='w-5 absolute top-1/4 right-9' />
+                                </div>
+                            </div>
 
-                    </div>
-                    <div className='flex  gap-2 mt-4'>
-                        <input type="checkbox" />
-                        <span className='text-white'>I agree to the <span className="text-purple-400 cursor-pointer">Terms & Conditions</span></span>
-                    </div>
-                    <div className='bg-[#C69C72] flex justify-center items-center
-                     mt-9 py-3 rounded-lg hover:bg-orange-700 cursor-pointer transition-colors duration-150'>
-                        <button className='text-white'>Create account</button>
-                    </div>
+                            {/* Email */}
+                            <div className='relative mt-3'>
+                                <input
+                                    type="email"
+                                    placeholder='Email'
+                                    className='py-3 px-3 rounded-lg outline-none w-[300px]'
+                                    value={Email} onChange={(e) =>setEmail (e.target.value)}
+                                />
+                                <img
+                                    src={assets.email}
+                                    alt=""
+                                    className='absolute right-9 top-1/2 transform -translate-y-1/2 w-5'
+                                />
+                            </div>
+
+                            {/* Password */}
+                            <div className='relative mt-3'>
+                                <input
+                                    type="password"
+                                    placeholder='Password'
+                                    className='py-3 px-3 rounded-lg outline-none w-[300px]'
+                                    value={Password} onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <img
+                                    src={assets.padlock}
+                                    alt=""
+                                    className='absolute right-9 top-1/2 transform -translate-y-1/2 w-6'
+                                />
+                            </div>
+                            <div className='bg-white mt-10 p-3 flex justify-center items-center
+                           hover:bg-amber-700 hover:text-white rounded-md cursor-pointer '>
+                                <button>Sign up</button>
+                            </div>
+                        </>
+                    )}
                 </form>
             </div>
-
         </div>
     )
 }
