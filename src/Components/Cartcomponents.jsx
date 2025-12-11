@@ -32,7 +32,7 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
 
 
   let totalprice = 0
-  for (let i = 0; i <  cartItem.length; i++)
+  for (let i = 0; i < cartItem.length; i++)
     totalprice += cartItem[i].price
   return (
 
@@ -63,7 +63,7 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
       </div>
 
 
-      <div className="mt-4 px-4 overflow-y-auto h-[75%] space-y-3">
+      <div className="mt-4 px-4 overflow-y-auto h-[75%] space-y-3 relative">
 
         {cartItem.length === 0 && (
           <p className="text-center text-gray-500 mt-10">No items in cart</p>
@@ -75,7 +75,7 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
             className="grid grid-cols-4 items-center bg-amber-100 shadow p-2 rounded-lg"
           >
             <img
-              src={`${API_URL}/uploads/${item.image}`}
+              src={`${item.image}`}
               alt=""
               className='w-12 h-12 object-cover rounded'
             />
@@ -112,8 +112,9 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
           <p className='font-bold text-2xl text-black/80'>Total:{totalprice.toFixed(2)}</p>
         </div>
       </div>
-
-
+<div className='absolute  bottom-32 right-10 flex items-center justify- '>
+          <p className='bg-green-800 px-4 py-2 rounded-md text-white '>Place Order</p>
+        </div>
     </div>
   )
 }

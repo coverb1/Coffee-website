@@ -5,43 +5,44 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../context/Storecontext';
 import { toast } from 'react-toastify';
-const Navbars = ({ openSidebar, opencart ,opensurelogout}) => {
+const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
 
-  const { userData, addtocartlocal,cartItemlocally } = useContext(StoreContext)
+  const { userData, addtocartlocal } = useContext(StoreContext)
+  const [userprofile, setuserprofile] = useState(null)
 
   const navigate = useNavigate()
   const API_URL = import.meta.env.VITE_API_URL
   const [explorefood, setexplorefood] = useState([])
   // const sidebarnavigate=useNavigate()
-const [count,setcount]=useState(0)
+  const [count, setcount] = useState(0)
 
-useEffect(()=>{
-  const getcount=async()=>{
-    try {
-      const res=await axios.get(`${API_URL}/countcartitems`,{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      setcount(res.data.totalItems)
-      console.log("carts Number are",res)
-    } catch (error) {
-      console.log(error)
+  useEffect(() => {
+    const getcount = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/countcartitems`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        setcount(res.data.totalItems)
+        console.log("carts Number are", res)
+      } catch (error) {
+        console.log(error)
+      }
     }
-  }
-  getcount()
-},[])
+    getcount()
+  }, [])
 
-  const handlelogout = async () => {
-    try {
-      localStorage.removeItem('token')
-      // window.location.reload()
-      window.location.reload()
-      console.log("userdeleted well")
-    } catch (error) {
-      console.log("failed to log out", error)
-    }
-  }
+  // const handlelogout = async () => {
+  //   try {
+  //     localStorage.removeItem('token')
+  //     // window.location.reload()
+  //     window.location.reload()
+  //     console.log("userdeleted well")
+  //   } catch (error) {
+  //     console.log("failed to log out", error)
+  //   }
+  // }
 
   useEffect(() => {
     const getexplorecoffee = async () => {
@@ -55,6 +56,31 @@ useEffect(()=>{
     }
     getexplorecoffee()
   }, [])
+
+  // uploading image
+
+ const handleonchangeProfile = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return;
+
+    const formData = new FormData()
+    formData.append('images', file)
+
+    try {
+      const responce = await axios.post(`${API_URL}/profile/upload`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        } 
+      })
+      setuserprofile(responce.data.url)
+      console.log('image is',responce.data.url)
+      toast.success("image uploaded well")
+    } catch (error) {
+toast.error("profile does not uploaded well")
+console.log(error)
+    }
+  }
+
   return (
     <div className="font-poppins bg-amber-100 overflow-hidden">
       <div className='relative w-full '>
@@ -114,14 +140,32 @@ useEffect(()=>{
             )}
 
             {/* Cart icon */}
-          <div className='relative bg-gray-50 rounded-full w-10 h10'>
-            <img src={assets.carticon} alt="" className='w-10' onClick={opencart} />
-            <span className='absolute top-2/3 right-1/2 bg-red-600 text-white text-sm w-5
+            <div className='relative bg-gray-50 rounded-full w-10 h10'>
+              <img src={assets.carticon} alt="" className='w-10' onClick={opencart} />
+              <span className='absolute top-2/3 right-1/2 bg-red-600 text-white text-sm w-5
              h-5 rounded-full flex items-center justify-center'>{count}</span>
-              </div>
+            </div>
+            {/* profile */}
+            <div>
+              {userData ? (
+   <div className='relative w-16 h-16'>
+    <input type="file" id='profileupload' className='hidden' onChange={handleonchangeProfile} />
 
-            <p className='bg-black p-3 rounded-full font-bold'>{userData ? userData.name : 'Guest'}</p>
-            
+<label htmlFor='profileupload' className='w-16 h-16 rounded-full bg-black font-bold
+flex items-center justify-center cursor-pointer'>
+  Profile</label>
+
+  {/* Upload image */}
+{userprofile&&(
+  <img src={userprofile} alt="profile" className='absolute inset-0 w-16 h-16 rounded-full object-cover
+  cursor-pointer ' onClick={()=>document.getElementById('profileupload').click()} />
+)}
+   </div>
+
+              ) : (
+                <p>Guest</p>
+              )}
+            </div>
           </ul>
         </div>
         <div className='absolute top-40 mx-28'>
@@ -217,7 +261,7 @@ useEffect(()=>{
             return (
               <div key={item._id}>
                 <div className=' mx-6 mt-10 bg-black/20 w-72 mb-5 rounded-md '>
-                  <img src={`${API_URL}/uploads/${item.image}`} alt=""
+                  <img src={`${item.image}`} alt=""
                     className='w-full h-60 rounded-lg object-cover' />
                   <div className='mx-2 '>
                     <div className='mt-2'>
@@ -231,7 +275,7 @@ useEffect(()=>{
                         try {
                           const responceonaddtocart = await axios.post(`${API_URL}/addtocart`, {
                             foodId: item._id,
-                            name: item.Name,
+                            name: item.name,
                             price: item.price,
                             image: item.image,
                             quantity: 1
