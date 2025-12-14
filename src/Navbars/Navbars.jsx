@@ -291,7 +291,7 @@ flex items-center justify-center cursor-pointer'>
               return (
                 <div key={item._id}>
                   <div className=' mx-6 mt-10 bg-black/20 w-72 mb-5 rounded-md '>
-                    <img src={`${item.image}`} alt=""
+                    <img src={`${item.image[0].url}`} alt=""
                       className='w-full h-60 rounded-lg object-cover' />
                     <div className='mx-2 '>
                       <div className='mt-2'>
