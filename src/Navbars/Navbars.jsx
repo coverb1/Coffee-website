@@ -7,14 +7,41 @@ import { StoreContext } from '../context/Storecontext';
 import { toast } from 'react-toastify';
 const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
 
-  const { userData, addtocartlocal } = useContext(StoreContext)
+  const { userData } = useContext(StoreContext)
   const [userprofile, setuserprofile] = useState(null)
+  const [quantity, setquatinty] = useState({})
 
   const navigate = useNavigate()
   const API_URL = import.meta.env.VITE_API_URL
   const [explorefood, setexplorefood] = useState([])
-  // const sidebarnavigate=useNavigate()
   const [count, setcount] = useState(0)
+  const [search, setsearch] = useState("")
+
+  const navigateTodetails=useNavigate()
+  const cover=(id)=>{navigateTodetails(`details/${id}`)}
+  // seachhandling
+
+  const handlesearch = (e) => {
+    setsearch(e.target.value)
+  }
+
+  const filterfood = explorefood.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+
+
+
+  const increaseQty = (id) => {
+    setquatinty(prev => ({
+      ...prev,
+      [id]: (prev[id] || 1) + 1
+    }))
+  }
+
+  const decreaseQty = (id) => {
+    setquatinty(prev => ({
+      ...prev,
+      [id]: Math.max((prev[id] || 1) - 1, 1)
+    }))
+  }
 
   useEffect(() => {
     const getcount = async () => {
@@ -59,7 +86,7 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
 
   // uploading image
 
- const handleonchangeProfile = async (e) => {
+  const handleonchangeProfile = async (e) => {
     const file = e.target.files[0]
     if (!file) return;
 
@@ -70,14 +97,14 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
       const responce = await axios.post(`${API_URL}/profile/upload`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
-        } 
+        }
       })
       setuserprofile(responce.data.url)
-      console.log('image is',responce.data.url)
+      console.log('image is', responce.data.url)
       toast.success("image uploaded well")
     } catch (error) {
-toast.error("profile does not uploaded well")
-console.log(error)
+      toast.error("profile does not uploaded well")
+      console.log(error)
     }
   }
 
@@ -89,7 +116,9 @@ console.log(error)
           <div className='absolute my-5 top-4 flex gap-8 mx-7 '>
             <h1 className='text-white text-xl font-semibold'>WAGUAN <br /> COFFEE</h1>
             <div className='relative mx-5'>
-              <input type="text" placeholder='Search here.....'
+
+              {/* Search */}
+              <input value={search} onChange={handlesearch} type="text" placeholder='Search here.....'
                 className='hidden md:block md:outline-none md:bg-transparent md:border md:w-full 
                 md:rounded-xl md: text-white md: placeholder-white
                 md: px-10 md:py-1 md:font-semibold' />
@@ -148,19 +177,19 @@ console.log(error)
             {/* profile */}
             <div>
               {userData ? (
-   <div className='relative w-16 h-16'>
-    <input type="file" id='profileupload' className='hidden' onChange={handleonchangeProfile} />
+                <div className='relative w-16 h-16'>
+                  <input type="file" id='profileupload' className='hidden' onChange={handleonchangeProfile} />
 
-<label htmlFor='profileupload' className='w-16 h-16 rounded-full bg-black font-bold
+                  <label htmlFor='profileupload' className='w-16 h-16 rounded-full bg-black font-bold
 flex items-center justify-center cursor-pointer'>
-  Profile</label>
+                    Profile</label>
 
-  {/* Upload image */}
-{userprofile&&(
-  <img src={userprofile} alt="profile" className='absolute inset-0 w-16 h-16 rounded-full object-cover
-  cursor-pointer ' onClick={()=>document.getElementById('profileupload').click()} />
-)}
-   </div>
+                  {/* Upload image */}
+                  {userprofile && (
+                    <img src={userprofile} alt="profile" className='absolute inset-0 w-16 h-16 rounded-full object-cover
+  cursor-pointer ' onClick={() => document.getElementById('profileupload').click()} />
+                  )}
+                </div>
 
               ) : (
                 <p>Guest</p>
@@ -256,57 +285,65 @@ flex items-center justify-center cursor-pointer'>
           <p>Our Special Coffee</p>
         </div>
         <div className='flex flex-col mx-3 md:mx-0 md:grid md:grid-cols-4 '>
+          {/* Mapped items */}
+          {filterfood.length > 0 ? (
+            filterfood.map((item) => {
+              return (
+                <div key={item._id}>
+                  <div className=' mx-6 mt-10 bg-black/20 w-72 mb-5 rounded-md '>
+                    <img src={`${item.image}`} alt=""
+                      className='w-full h-60 rounded-lg object-cover' />
+                    <div className='mx-2 '>
+                      <div className='mt-2'>
+                        <div className='flex flex-row justify-between mb-3 mt-2 cursor-pointer '>
+                        <p className='font-bold text-amber-950'>{item.name}</p>
+                        <div>
+                        <p onClick={()=>cover(item._id)} className='text-base font-semibold'>View</p>
+                        </div>
+                        </div>
+                        <p className=' text-amber-950'>{item.description}</p>
+                      </div>
+                      <div className='flex justify-between mt-3'>
+                        <p className='font-bold'>${item.price}</p>
+                        {/* Incraesing and decreasing quality */}
+                        <div>
+                          <button onClick={() => decreaseQty(item._id)}>-</button>
+                          <span>{quantity[item._id] || 1}</span>
+                          <button onClick={() => increaseQty(item._id)}>+</button>
+                        </div>
+                        <button onClick={async () => {
+                          try {
+                            const responceonaddtocart = await axios.post(`${API_URL}/addtocart`, {
+                              foodId: item._id,
+                              name: item.name,
+                              price: item.price,
+                              image: item.image,
+                              quantity: quantity[item._id] || 1
+                            }, {
+                              headers: {
+                                Authorization: `bearer ${localStorage.getItem('token')}`
+                              }
+                            })
+                            toast.success('item added well')
+                            console.log('item added well', responceonaddtocart)
 
-          {explorefood.map((item) => {
-            return (
-              <div key={item._id}>
-                <div className=' mx-6 mt-10 bg-black/20 w-72 mb-5 rounded-md '>
-                  <img src={`${item.image}`} alt=""
-                    className='w-full h-60 rounded-lg object-cover' />
-                  <div className='mx-2 '>
-                    <div className='mt-2'>
-                      <p className='font-bold text-amber-950'>{item.Name}</p>
-                      <p className=' text-amber-950'>{item.description}</p>
-                    </div>
-                    <div className='flex justify-between mt-3'>
-                      <p className='font-bold'>${item.price}</p>
-
-                      <button onClick={async () => {
-                        try {
-                          const responceonaddtocart = await axios.post(`${API_URL}/addtocart`, {
-                            foodId: item._id,
-                            name: item.name,
-                            price: item.price,
-                            image: item.image,
-                            quantity: 1
-                          }, {
-                            headers: {
-                              Authorization: `bearer ${localStorage.getItem('token')}`
-                            }
-                          })
-                          // ADD LOCALLY
-                          addtocartlocal({
-                            _id: item._id,
-                            name: item.Name,
-                            price: item.price,
-                            image: item.image,
-                            quantity: 1
-                          })
-                          toast.success('item added well')
-                          console.log('item added well', responceonaddtocart)
-
-                        } catch (error) {
-                          toast.error('failed to add food')
-                          console.log('failded to add food', error)
-                        }
-                      }}
-                        className='bg-orange-900 px-3 py-1 mb-2 rounded-md text-white'>Order now</button>
+                          } catch (error) {
+                            toast.error('failed to add food')
+                            console.log('failded to add food', error)
+                          }
+                        }}
+                          className='bg-orange-900 px-3 py-1 mb-2 rounded-md text-white'>Order now</button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })
+          ) : (
+            <p className=' flex justify-center items-center mb-8 text-red-600 font-bold'
+            >No Searched Items!</p>
+          )}
+
         </div>
       </div>
 
@@ -448,5 +485,4 @@ flex items-center justify-center cursor-pointer'>
     </div>
   );
 };
-
 export default Navbars;

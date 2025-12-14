@@ -31,7 +31,9 @@ import coffebar from './coffebar.png'
 import abouticon from './abouticon.png'
 import userlogn from './userlogn.png'
 import cancel from './cancel.png'
+import dropdown from './dropdown.png'
 export const assets = {
+    dropdown,
     cancel,
     download,
     cofi,

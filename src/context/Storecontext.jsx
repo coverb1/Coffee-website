@@ -8,7 +8,7 @@ const StoreContextProvider = (props) => {
 
     const [userData, setuserData] = useState(null)
     const [cartItemlocally, setcartItemlocally] = useState([])
-
+    const [cartItem, setcartItem] = useState({})
     const [cartcount, setcartcount] = useState(0)
 
 

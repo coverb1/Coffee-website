@@ -5,12 +5,14 @@ const Sidebar = ({ isopen, closeSidebar }) => {
   if (!isopen) return null
   return (
 
-    <div className={`bg-orange-900 fixed  right-0 top-0 w-64 h-full z-50 transition-opacity duration-300
+    <div className={`bg-orange-900 fixed  right-0 top-0 w-64 h-full z-50 transition-all duration-300
        ${isopen ? 'opacity-100' : 'opacity-0'}z-50 md:hidden block `} >
-      <div>
-        <button onClick={closeSidebar} className='absolute right-10 top-10 text-2xl font-bold text-white'>X</button>
+      <div className='flex flex-row mt-10 mx-3 gap-3 items-center'>
+        {/* <button onClick={closeSidebar} className='absolute right-10 top-10 text-2xl font-bold text-white'>X</button> */}
+        <img src={assets.dropdown} className='w-5 h-5 rotate-90 filter invert' alt="" onClick={closeSidebar} />
+        <p onClick={closeSidebar} className='text-white text-xl font-bold'>Back</p>
       </div>
-      <div className=' absolute flex flex-col gap-10 w-full  top-36'>
+      <div className=' absolute  flex flex-col gap-10 w-full  top-36'>
         <div className='flex flex-row justify-center gap-32 items-center'>
           <p className='text-xl text-white'>Home</p>
           <img src={assets.home} alt="" className='w-6' />

@@ -4,11 +4,18 @@ import axios from 'axios'
 import { API_URL } from '../Loginpage/Loginpage'
 import { toast } from 'react-toastify'
 import { StoreContext } from '../context/Storecontext'
+import { loadStripe } from '@stripe/stripe-js';
 const Cartcomponents = ({ cartisopen, closecart }) => {
+
   if (!cartisopen) return null
 
   const [cartItem, setcartItem] = useState([])
+
   // const {cartItemlocally}=useContext(StoreContext)
+  const STRIPE_PUBLISHABLE = import.meta.env.STRIPE_PUBLISHABLE_KEY
+  // const makePyament = async () => {
+  //   const stripe = await loadStripe(`${STRIPE_PUBLISHABLE}`)
+  // }
 
   useEffect(() => {
     const getcartItem = async () => {
@@ -112,9 +119,9 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
           <p className='font-bold text-2xl text-black/80'>Total:{totalprice.toFixed(2)}</p>
         </div>
       </div>
-<div className='absolute  bottom-32 right-10 flex items-center justify- '>
-          <p className='bg-green-800 px-4 py-2 rounded-md text-white '>Place Order</p>
-        </div>
+      <div className='absolute  bottom-32 right-10 flex items-center justify- '>
+        <p className='bg-green-800 px-4 py-2 rounded-md text-white cursor-pointer'>Place Order</p>
+      </div>
     </div>
   )
 }
