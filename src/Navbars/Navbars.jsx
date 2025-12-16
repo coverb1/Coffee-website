@@ -18,7 +18,7 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
   const [search, setsearch] = useState("")
 
   const navigateTodetails=useNavigate()
-  const cover=(id)=>{navigateTodetails(`details/${id}`)}
+  const cover=(id)=>{navigateTodetails(`/productDetails/${id}`)}
   // seachhandling
 
   const handlesearch = (e) => {
@@ -26,8 +26,6 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
   }
 
   const filterfood = explorefood.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
-
-
 
   const increaseQty = (id) => {
     setquatinty(prev => ({
