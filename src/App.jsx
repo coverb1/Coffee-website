@@ -23,7 +23,7 @@ const App = () => {
           <Route path='/' element={<Navbars openSidebar={() => setisopen(true)} opencart={() => setcartisopen(true)}
             opensurelogout={() => setsurelogout(true)} />} />
           <Route path='/login' element={<Loginpage />} />
-         <Route path='/productDetails/:id' element={<ProductDetails/>} />
+         <Route path='/productDetails/:id' element={<ProductDetails openSidebar={()=> setisopen(true)} opencart={()=>setcartisopen(true)} />} />
         </Routes>
       </div>
     </>

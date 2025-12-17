@@ -5,10 +5,10 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { StoreContext } from '../context/Storecontext'
 
-export const  API_URL=import.meta.env.VITE_API_URL
+export const API_URL = import.meta.env.VITE_API_URL
 
 const Loginpage = () => {
-const {getUserdata}=useContext(StoreContext)
+    const { getUserdata } = useContext(StoreContext)
     const navigate = useNavigate()
     const [currentstate, setcurrentstate] = useState("Login")
     const [Firstname, setFirstname] = useState("")
@@ -16,38 +16,38 @@ const {getUserdata}=useContext(StoreContext)
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
 
-const handleregister=async(e)=>{
-    e.preventDefault()
-try {
-    await axios.post(`${API_URL}/registered`,{
-Firstname,Secondname,Email,Password
-    })
-    setEmail('')
-    setFirstname('')
-    setSecondname('')
-    setPassword('')
-    toast.success('You are registered well ')
-} catch (error) {
-    console.log("failed to Register")
-    toast.error('failed to Register')
-}
-   }
+    const handleregister = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post(`${API_URL}/registered`, {
+                Firstname, Secondname, Email, Password
+            })
+            setEmail('')
+            setFirstname('')
+            setSecondname('')
+            setPassword('')
+            toast.success('You are registered well ')
+        } catch (error) {
+            console.log("failed to Register")
+            toast.error('failed to Register')
+        }
+    }
 
-   const handlelogin=async(e)=>{
-    e.preventDefault()
-   try {
-    const loginresponce=await axios.post(`${API_URL}/login`,{
-        Email,Password
-    })
-    localStorage.setItem('token',loginresponce.data.token)
-    await getUserdata()
-    toast.success("You have successfull logged in")
-    window.location.href='/' 
-   } catch (error) {
-  console.log("logged in failed",error)
-toast.error("failed to login")
-   }
-}
+    const handlelogin = async (e) => {
+        e.preventDefault()
+        try {
+            const loginresponce = await axios.post(`${API_URL}/login`, {
+                Email, Password
+            })
+            localStorage.setItem('token', loginresponce.data.token)
+            await getUserdata()
+            toast.success("You have successfull logged in")
+            window.location.href = '/'
+        } catch (error) {
+            console.log("logged in failed", error)
+            toast.error("failed to login")
+        }
+    }
 
 
 
@@ -72,7 +72,7 @@ toast.error("failed to login")
                     <p className="mb-6 text-white">Already have account? <span onClick={() => setcurrentstate("Login")} className="text-purple-400 cursor-pointer">Login</span></p>
                 }
 
-                <form onSubmit={currentstate==='Login'? handlelogin:handleregister}>
+                <form onSubmit={currentstate === 'Login' ? handlelogin : handleregister}>
                     {currentstate === 'Login' ? (
                         <>
                             {/* Email */}
@@ -118,7 +118,7 @@ toast.error("failed to login")
                                         type="text"
                                         placeholder='First Name'
                                         className='py-3 px-3 rounded-lg outline-none w-[300px]'
-                                        value={Firstname} onChange={(e) =>setFirstname( e.target.value)}
+                                        value={Firstname} onChange={(e) => setFirstname(e.target.value)}
                                     />
                                     <img src={assets.user} alt="" className='w-5 absolute top-1/4 right-9' />
                                 </div>
@@ -127,7 +127,7 @@ toast.error("failed to login")
                                         type="text"
                                         placeholder='Last Name'
                                         className='py-3 px-3 rounded-lg outline-none w-[300px]'
-                                        value={Secondname} onChange={(e)=>setSecondname(e.target.value)}
+                                        value={Secondname} onChange={(e) => setSecondname(e.target.value)}
                                     />
                                     <img src={assets.user} alt="" className='w-5 absolute top-1/4 right-9' />
                                 </div>
@@ -139,7 +139,7 @@ toast.error("failed to login")
                                     type="email"
                                     placeholder='Email'
                                     className='py-3 px-3 rounded-lg outline-none w-[300px]'
-                                    value={Email} onChange={(e) =>setEmail (e.target.value)}
+                                    value={Email} onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <img
                                     src={assets.email}

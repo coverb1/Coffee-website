@@ -17,8 +17,8 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
   const [count, setcount] = useState(0)
   const [search, setsearch] = useState("")
 
-  const navigateTodetails=useNavigate()
-  const cover=(id)=>{navigateTodetails(`/productDetails/${id}`)}
+  const navigateTodetails = useNavigate()
+  const cover = (id) => { navigateTodetails(`/productDetails/${id}`) }
   // seachhandling
 
   const handlesearch = (e) => {
@@ -294,10 +294,10 @@ flex items-center justify-center cursor-pointer'>
                     <div className='mx-2 '>
                       <div className='mt-2'>
                         <div className='flex flex-row justify-between mb-3 mt-2 cursor-pointer '>
-                        <p className='font-bold text-amber-950'>{item.name}</p>
-                        <div>
-                        <p onClick={()=>cover(item._id)} className='text-base font-semibold'>View</p>
-                        </div>
+                          <p className='font-bold text-amber-950'>{item.name}</p>
+                          <div>
+                            <p onClick={() => cover(item._id)} className='text-base font-semibold'>View</p>
+                          </div>
                         </div>
                         <p className=' text-amber-950'>{item.description}</p>
                       </div>
