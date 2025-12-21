@@ -315,7 +315,7 @@ flex items-center justify-center cursor-pointer'>
                               foodId: item._id,
                               name: item.name,
                               price: item.price,
-                              image: item.image,
+                              image: item.image[0].url,
                               quantity: quantity[item._id] || 1
                             }, {
                               headers: {

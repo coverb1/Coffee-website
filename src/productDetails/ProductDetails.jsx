@@ -3,11 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { API_URL } from '../Loginpage/Loginpage'
 import axios from 'axios'
 import { assets } from '../assets/assets'
+import { toast } from 'react-toastify'
 const ProductDetails = ({ openSidebar, opencart }) => {
 
   const [product, setproduct] = useState(null)
   const { id } = useParams()
   const [count, setcount] = useState(0)
+  const [mainImage, setmainImage] = useState(null)
 
   const navigatee = useNavigate()
 
@@ -20,6 +22,7 @@ const ProductDetails = ({ openSidebar, opencart }) => {
           }
         })
         setproduct(res.data.product)
+        setmainImage(res.data.product.image[0]?.url)
       } catch (error) {
         console.log(error)
       }
@@ -65,42 +68,63 @@ const ProductDetails = ({ openSidebar, opencart }) => {
           <img src={assets.menu} alt="" className='w-8 ml-36 md:hidden block '
             onClick={openSidebar} />
         </div>
-
       </div>
-
-<div  className='flex flex-row justify-between mx-20 '>
-  {/* right side */}
-      <div className='flex flex-col gap-8'>
-        <img src={product.image[0].url} className='w-72 rounded-sm' alt="" />
-        <div className='flex flex-row gap-10 rounded-sm'>
-          <div>
-            <img src={product.image[1].url} alt="" className='w-20 rounded-sm' />
-          </div>
-          <div>
-            <img src={product.image[1].url} alt="" className='w-20 rounded-sm' />
-          </div>
+      <div className='flex flex-row gap-20 justify-center '>
+        {/* right side */}
+        <div className='flex flex-col gap-8'>
 
           <div>
-            <img src={product.image[1].url} alt="" className='w-20 rounded-sm' />
+            <img src={mainImage} className='w-80 h-80 rounded-sm' alt="" />
           </div>
 
+          <div className='flex flex-row gap-5'>
+            {product.image.map((img, index) => (
+              <img
+                key={index}
+                src={img.url}
+                className={`w-20 rounded-sm h-20 cursor-pointer border transition-all duration-200 ${mainImage === img.url ? 'border-black scale-100' : 'border-gray-600 hover:scale-105'
+                  }`}
+                onClick={() => setmainImage(img.url)}
+              />
+            ))}
+          </div>
+          <p className='text-lg'>Description:{product.description}</p>
+        </div>
+
+        {/* Left side */}
+        <div>
           <div>
-            <img src={product.image[1].url} alt="" className='w-20 rounded-sm' />
+            <p className='text-3xl'>{product.name}</p>
+            <p>$:{product.price}</p>
+          </div>
+          <div className='mt-10'>
+            <p
+              onClick={async() => {
+                try {
+                  const responceonaddtocart = await axios.post(`${API_URL}/addtocart`, {
+                    foodId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image[0].url,
+                    quantity:1
+                  }, {
+                    headers: {
+                      Authorization: `bearer ${localStorage.getItem('token')}`
+                    }
+                  })
+                  toast.success('item added well')
+                  console.log('item added well', responceonaddtocart)
+
+                } catch (error) {
+                  toast.error('failed to add food')
+                  console.log('failded to add food', error)
+                }
+              }}
+              className='bg-amber-900 px-5 py-2 rounded-sm text-center text-white cursor-pointer'>
+              Add to cart</p>
           </div>
         </div>
       </div>
-
-{/* Left side */}
-<div>
-  <div>
-  <p className='text-3xl'>{product.name}</p>
-  <p>$:{product.price}</p>
-  </div>
-  <div className='mt-10'>
-    <p className='bg-amber-900 px-5 py-2 rounded-sm text-white cursor-pointer'>Add to cart</p>
-  </div>
-</div>
-</div>
     </div>
   )
 }
