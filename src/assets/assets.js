@@ -33,7 +33,11 @@ import userlogn from './userlogn.png'
 import cancel from './cancel.png'
 import dropdown from './dropdown.png'
 import add from './add.png'
+import files from './files.png'
+import order from './order.png'
 export const assets = {
+    files,
+    order,
     add,
     dropdown,
     cancel,

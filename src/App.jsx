@@ -11,6 +11,8 @@ import Navbaradmin from './Components/Navbaradmin'
 import Adminsidebar from './Components/Adminsidebar'
 import AdminLayout from './Components/AdminLayout'
 import Add from './Admin/Add'
+import List from './Admin/List'
+import Order from './Admin/Order'
 
 const App = () => {
   const [isopen, setisopen] = useState(false)
@@ -33,6 +35,8 @@ const App = () => {
           {/* <Route path='/slidebar' element={<Adminsidebar/>} />  */}
           <Route path='/admin' element={<AdminLayout/>}>
          <Route path='add'  element={<Add/>} />
+       <Route path='list' element={<List/>}/>
+       <Route path='Order' element={<Order/>} />
          </Route>
         </Routes>
     
