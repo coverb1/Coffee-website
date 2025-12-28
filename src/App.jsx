@@ -7,6 +7,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import Cartcomponents from './Components/Cartcomponents'
 import Surelogout from './Components/Surelogout'
 import ProductDetails from './productDetails/ProductDetails'
+import Navbaradmin from './Components/Navbaradmin'
+import Adminsidebar from './Components/Adminsidebar'
+import AdminLayout from './Components/AdminLayout'
+import Add from './Admin/Add'
 
 const App = () => {
   const [isopen, setisopen] = useState(false)
@@ -24,7 +28,14 @@ const App = () => {
             opensurelogout={() => setsurelogout(true)} />} />
           <Route path='/login' element={<Loginpage />} />
          <Route path='/productDetails/:id' element={<ProductDetails openSidebar={()=> setisopen(true)} opencart={()=>setcartisopen(true)} />} />
+          <Route path='/slidebar' element={<Sidebar/>} />
+          {/* <Route path='/Navbaradmin' element={<Navbaradmin/>}/> */}
+          {/* <Route path='/slidebar' element={<Adminsidebar/>} />  */}
+          <Route path='/admin' element={<AdminLayout/>}>
+         <Route path='add'  element={<Add/>} />
+         </Route>
         </Routes>
+    
       </div>
     </>
   )

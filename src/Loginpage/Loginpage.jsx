@@ -4,11 +4,12 @@ import { data, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { StoreContext } from '../context/Storecontext'
+import { jwtDecode } from 'jwt-decode'
 
 export const API_URL = import.meta.env.VITE_API_URL
 
 const Loginpage = () => {
-    const { getUserdata } = useContext(StoreContext)
+    const { getUserdata, userData } = useContext(StoreContext)
     const navigate = useNavigate()
     const [currentstate, setcurrentstate] = useState("Login")
     const [Firstname, setFirstname] = useState("")
@@ -39,15 +40,27 @@ const Loginpage = () => {
             const loginresponce = await axios.post(`${API_URL}/login`, {
                 Email, Password
             })
-            localStorage.setItem('token', loginresponce.data.token)
-            await getUserdata()
-            toast.success("You have successfull logged in")
-            window.location.href = '/'
+            const token = loginresponce.data.token //get token
+            localStorage.setItem('token', loginresponce.data.token) //settoken
+            const decode = jwtDecode(token)
+            const role = decode.Role
+
+            toast.success('Login successful')
+
+            if (role === 'Admin') {
+                navigate('/admin')
+            }
+            else {
+                navigate('/')
+            }
+
         } catch (error) {
             console.log("logged in failed", error)
             toast.error("failed to login")
         }
     }
+
+
 
 
 
@@ -106,7 +119,9 @@ const Loginpage = () => {
                             </div>
                             <div className='bg-white mt-10 p-3 flex justify-center items-center
                            hover:bg-amber-700 hover:text-white rounded-md cursor-pointer '>
-                                <button>Sign in</button>
+                                <button
+                                   
+                                >Sign in</button>
                             </div>
                         </>
                     ) : (
