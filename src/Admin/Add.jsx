@@ -19,28 +19,28 @@ const[price,setPrice]=useState('')
         <p>Upload Images</p>
 
         <div className=' flex gap-5 '>
-          <label htmlFor="image1 ">
+          <label htmlFor="image1">
             <img src={image1?URL.createObjectURL(image1):assets.uploading} alt="" className='w-10 cursor-pointer'  />
             <input type="file" onChange={(e)=>setImage1(e.target.files[0])} id='image1' className='hidden' />
           </label>
 
           <label htmlFor="image2">
-            <img src={image2?URL.createObjectURL:assets.uploading} alt="" className='w-10 cursor-pointer'  />
+            <img src={image2?URL.createObjectURL(image2):assets.uploading} alt="" className='w-10 cursor-pointer'  />
             <input onChange={(e)=>setImage2(e.target.files[0])} type="file" id='image2' className='hidden' />
           </label>
 
           <label htmlFor="image3">
-            <img src={image3?URL.createObjectURL:assets.uploading} alt="" className='w-10 cursor-pointer' />
+            <img src={image3?URL.createObjectURL(image3):assets.uploading} alt="" className='w-10 cursor-pointer' />
             <input type="file" id='image3'  onChange={(e)=>setImage3(e.target.files[0])} className='hidden' />
           </label>
 
           <label htmlFor="image4">
-            <img src={image4?URL.createObjectURL:assets.uploading} alt="" className='w-10 cursor-pointer' />
+            <img src={image4?URL.createObjectURL(image4):assets.uploading} alt="" className='w-10 cursor-pointer' />
             <input type="file" onChange={(e)=>setImage4(e.target.files[0])} id='image4' className='hidden' />
           </label>
 
           <label htmlFor="image5">
-            <img src={image5?URL.createObjectURL:assets.uploading} alt="" className='w-10 cursor-pointer' />
+            <img src={image5?URL.createObjectURL(image5):assets.uploading} alt="" className='w-10 cursor-pointer' />
             <input type="file" onChange={(e)=>setImage5(e.target.files[0])} id='image5' className='hidden' />
           </label>
         </div>
