@@ -35,7 +35,9 @@ import dropdown from './dropdown.png'
 import add from './add.png'
 import files from './files.png'
 import order from './order.png'
+import uploading from './uploading.png'
 export const assets = {
+    uploading,
     files,
     order,
     add,
