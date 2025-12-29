@@ -60,10 +60,6 @@ const Loginpage = () => {
         }
     }
 
-
-
-
-
     return (
         <div className='flex h-screen overflow-hidden'>
             <div className='md:block hidden w-1/2 relative'>
@@ -93,13 +89,14 @@ const Loginpage = () => {
                                 <input
                                     type="email"
                                     placeholder='Email'
-                                    className='py-3 px-10 rounded-lg outline-none w-[300px]'
-                                    value={Email} onChange={(e) => setEmail(e.target.value)}
+                                    className='py-3 pl-5 pr-16 rounded-lg outline-none w-[300px]'
+                                    value={Email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <img
                                     src={assets.email}
                                     alt=""
-                                    className='absolute right-9 top-1/2 transform -translate-y-1/2 w-6'
+                                    className='absolute right-4 top-1/2 transform -translate-y-1/2 w-6'
                                 />
                             </div>
 
@@ -108,19 +105,19 @@ const Loginpage = () => {
                                 <input
                                     type="password"
                                     placeholder='Password'
-                                    className='py-3 px-10 rounded-lg outline-none w-[300px]'
+                                    className='py-3 pl-5 pr-16 rounded-lg outline-none w-[300px]'
                                     value={Password} onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <img
                                     src={assets.padlock}
                                     alt=""
-                                    className='absolute right-9 top-1/2 transform -translate-y-1/2 w-6'
+                                    className='absolute right-4 top-1/2 transform -translate-y-1/2 w-6'
                                 />
                             </div>
                             <div className='bg-white mt-10 p-3 flex justify-center items-center
                            hover:bg-amber-700 hover:text-white rounded-md cursor-pointer '>
                                 <button
-                                   
+
                                 >Sign in</button>
                             </div>
                         </>
@@ -132,7 +129,7 @@ const Loginpage = () => {
                                     <input
                                         type="text"
                                         placeholder='First Name'
-                                        className='py-3 px-3 rounded-lg outline-none w-[300px]'
+                                        className='py-3 pr-16 px-3 rounded-lg outline-none w-[300px]'
                                         value={Firstname} onChange={(e) => setFirstname(e.target.value)}
                                     />
                                     <img src={assets.user} alt="" className='w-5 absolute top-1/4 right-9' />
@@ -141,7 +138,7 @@ const Loginpage = () => {
                                     <input
                                         type="text"
                                         placeholder='Last Name'
-                                        className='py-3 px-3 rounded-lg outline-none w-[300px]'
+                                        className='py-3 pr-16 px-3 rounded-lg outline-none w-[300px]'
                                         value={Secondname} onChange={(e) => setSecondname(e.target.value)}
                                     />
                                     <img src={assets.user} alt="" className='w-5 absolute top-1/4 right-9' />
