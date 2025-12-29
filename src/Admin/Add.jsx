@@ -29,7 +29,7 @@ Formdata.append("images",image1)
 Formdata.append("images",image2)
 Formdata.append("images",image3)
 Formdata.append("images",image4)
-Formdata.append("images",image5)
+Formdata.append("image",image5)
 
 const responce=await axios.post(`${API_URL}/food`,Formdata)
 toast.success("Product submitted well")
