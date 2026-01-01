@@ -36,7 +36,9 @@ import add from './add.png'
 import files from './files.png'
 import order from './order.png'
 import uploading from './uploading.png'
+import deleteIcon from './deleteIcon.png'
 export const assets = {
+    deleteIcon,
     uploading,
     files,
     order,
