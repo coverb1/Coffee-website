@@ -119,9 +119,11 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
           <p className='font-bold text-2xl text-black/80'>Total:{totalprice.toFixed(2)}</p>
         </div>
       </div>
-      <div className='absolute  bottom-32 right-10 flex items-center justify- '>
-        <p className='bg-green-800 px-4 py-2 rounded-md text-white cursor-pointer'>Place Order</p>
-      </div>
+      <div className="fixed bottom-0 right-0 w-96 p-4 bg-white border-t flex justify-center">
+  <button className="  bg-green-800 px-6 py-3 rounded-md text-white font-semibold hover:bg-green-900 transition">
+    Proceed to Checkout
+  </button>
+</div>
     </div>
   )
 }
