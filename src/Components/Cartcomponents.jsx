@@ -5,9 +5,14 @@ import { API_URL } from '../Loginpage/Loginpage'
 import { toast } from 'react-toastify'
 import { StoreContext } from '../context/Storecontext'
 import { loadStripe } from '@stripe/stripe-js';
+import { useNavigate } from 'react-router-dom'
 const Cartcomponents = ({ cartisopen, closecart }) => {
+ 
 
   if (!cartisopen) return null
+
+
+   const navigateTo = useNavigate()
 
   const [cartItem, setcartItem] = useState([])
 
@@ -120,10 +125,11 @@ const Cartcomponents = ({ cartisopen, closecart }) => {
         </div>
       </div>
       <div className="fixed bottom-0 right-0 w-96 p-4 bg-white border-t flex justify-center">
-  <button className="  bg-green-800 px-6 py-3 rounded-md text-white font-semibold hover:bg-green-900 transition">
-    Proceed to Checkout
-  </button>
-</div>
+        <button onClick={() => navigateTo('/Place-order')} className=" bg-green-800 px-6 py-3 rounded-md text-white
+   font-semibold hover:bg-green-900 transition">
+          Proceed to Checkout
+        </button>
+      </div>
     </div>
   )
 }

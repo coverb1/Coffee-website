@@ -13,6 +13,7 @@ import AdminLayout from './Components/AdminLayout'
 import Add from './Admin/Add'
 import List from './Admin/List'
 import Order from './Admin/Order'
+import PlaceOrder from './PlaceOrder/PlaceOrder'
 
 const App = () => {
   const [isopen, setisopen] = useState(false)
@@ -31,6 +32,7 @@ const App = () => {
           <Route path='/login' element={<Loginpage />} />
          <Route path='/productDetails/:id' element={<ProductDetails openSidebar={()=> setisopen(true)} opencart={()=>setcartisopen(true)} />} />
           <Route path='/slidebar' element={<Sidebar/>} />
+           <Route path='/Place-order' element={<PlaceOrder/>} />
           {/* <Route path='/Navbaradmin' element={<Navbaradmin/>}/> */}
           {/* <Route path='/slidebar' element={<Adminsidebar/>} />  */}
           <Route path='/admin' element={<AdminLayout/>}>
