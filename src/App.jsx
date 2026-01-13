@@ -21,7 +21,7 @@ const App = () => {
   const [surelogout, setsurelogout] = useState(false)
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <div>
         <Sidebar isopen={isopen} closeSidebar={() => setisopen(false)} />
         <Surelogout surelogout={surelogout} functsurelogout={() => setsurelogout(false)} />
@@ -30,18 +30,18 @@ const App = () => {
           <Route path='/' element={<Navbars openSidebar={() => setisopen(true)} opencart={() => setcartisopen(true)}
             opensurelogout={() => setsurelogout(true)} />} />
           <Route path='/login' element={<Loginpage />} />
-         <Route path='/productDetails/:id' element={<ProductDetails openSidebar={()=> setisopen(true)} opencart={()=>setcartisopen(true)} />} />
-          <Route path='/slidebar' element={<Sidebar/>} />
-           <Route path='/Place-order' element={<PlaceOrder/>} />
+          <Route path='/productDetails/:id' element={<ProductDetails openSidebar={() => setisopen(true)} opencart={() => setcartisopen(true)} />} />
+          <Route path='/slidebar' element={<Sidebar />} />
+          <Route path='/Place-order' element={<PlaceOrder />} />
           {/* <Route path='/Navbaradmin' element={<Navbaradmin/>}/> */}
           {/* <Route path='/slidebar' element={<Adminsidebar/>} />  */}
-          <Route path='/admin' element={<AdminLayout/>}>
-         <Route path='add'  element={<Add/>} />
-       <Route path='list' element={<List/>}/>
-       <Route path='Order' element={<Order/>} />
-         </Route>
+          <Route path='/admin' element={<AdminLayout />}>
+            <Route path='add' element={<Add />} />
+            <Route path='list' element={<List />} />
+            <Route path='Order' element={<Order />} />
+          </Route>
         </Routes>
-    
+
       </div>
     </>
   )
