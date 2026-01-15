@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import { createMemorySessionStorage, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../context/Storecontext';
 import { toast } from 'react-toastify';
 const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
@@ -16,7 +16,7 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
   const [explorefood, setexplorefood] = useState([])
   const [count, setcount] = useState(0)
   const [search, setsearch] = useState("")
-
+  const [CartItem, setcartItem] = useState([])
   const navigateTodetails = useNavigate()
   const cover = (id) => { navigateTodetails(`/productDetails/${id}`) }
   // seachhandling
@@ -28,6 +28,7 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
   const filterfood = explorefood.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
 
   const increaseQty = (id) => {
+    if (!isIncart(id)) return
     setquatinty(prev => ({
       ...prev,
       [id]: (prev[id] || 1) + 1
@@ -35,6 +36,7 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
   }
 
   const decreaseQty = (id) => {
+    if (!isIncart) return
     setquatinty(prev => ({
       ...prev,
       [id]: Math.max((prev[id] || 1) - 1, 1)
@@ -95,12 +97,38 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
     }
   }
 
+  // Fetch cart
+  const handlefetchCart = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/getaddedcart`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      setcartItem(res.data.item)
+      setcount(res.data.item.length)
+    } catch (error) {
+      setcartItem([])
+      setcount(0)
+      console.log("cart not found")
+    }
+  }
+
+  const isIncart = (id) => {
+    return CartItem.some(item => item.foodId === id)
+  }
+
+  useEffect(() => {
+    handlefetchCart()
+  }, [])
+
+
   return (
     <div className="font-poppins bg-amber-100 overflow-hidden">
       <div className='relative w-full '>
         <img src={assets.download} alt="" className='w-full object-cover h-96 object-top rounded-b-3xl' />
 
-        
+
         <div className='bg-white'>
           <div className='absolute my-5 top-4 flex gap-8 mx-7 '>
             <h1 className='text-white text-xl font-semibold'>WAGUAN <br /> COFFEE</h1>
@@ -164,7 +192,7 @@ const Navbars = ({ openSidebar, opencart, opensurelogout }) => {
               <span className='absolute top-2/3 right-1/2 bg-red-600 text-white text-sm w-5
              h-5 rounded-full flex items-center justify-center'>{count}</span>
             </li>
-            
+
             {/* profile */}
             <li>
               {userData ? (
@@ -189,7 +217,7 @@ cursor-pointer ' onClick={() => document.getElementById('profileupload').click()
           </ul>
         </div>
 
-        
+
         <div className='absolute top-40 mx-28'>
           <h4 className='text-white '>Welcome!</h4>
           <h2 className='text-white text-xl md:text-2xl font-bold my-3'>We serve the richest coffee <br /> in the city</h2>
@@ -281,10 +309,23 @@ cursor-pointer ' onClick={() => document.getElementById('profileupload').click()
                       <div className='flex justify-between mt-3'>
                         <p className='font-bold'>${item.price}</p>
                         {/* Incraesing and decreasing quality */}
-                        <div>
-                          <button onClick={() => decreaseQty(item._id)}>-</button>
-                          <span>{quantity[item._id] || 1}</span>
-                          <button onClick={() => increaseQty(item._id)}>+</button>
+                        <div className='flex gap-2 items-center'>
+                          <button
+                          onClick={()=>decreaseQty(item._id)}
+                          disabled={!isIncart(item._id)}
+                          className={!isIncart(item._id)?"opacity-40":""}
+                          >
+                            <span>{quantity[item._id] ||1}</span>
+                          </button>
+
+<button
+onClick={()=>increaseQty(item._id)}
+disabled={!isIncart(item._id)}
+className={!isIncart(item._id)?"opacity-40":""}
+>
++
+</button>
+
                         </div>
                         <button onClick={async () => {
                           try {
@@ -351,7 +392,7 @@ cursor-pointer ' onClick={() => document.getElementById('profileupload').click()
               </div>
               <img src={assets.rating} alt="" className='w-20' />
             </div>
-            <p className='mt-7'>Perfect 👍 now I understand what you want <br />
+            <p className='mt-7'>Perfect  now I understand what you want <br />
               — you want the profile image on the left, <br />
               and on the right, <br /> the name and stars on <br /> one line, with the job <br />
               title below.</p>
@@ -367,7 +408,7 @@ cursor-pointer ' onClick={() => document.getElementById('profileupload').click()
               </div>
               <img src={assets.rating} alt="" className='w-20' />
             </div>
-            <p className='mt-7'>Perfect 👍 now I understand what you want <br />
+            <p className='mt-7'>Perfect  now I understand what you want <br />
               — you want the profile image on the left, <br />
               and on the right, <br /> the name and stars on <br /> one line, with the job <br />
               title below.</p>
